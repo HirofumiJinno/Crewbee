@@ -10,9 +10,52 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2021_11_14_060832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "boat_uses", force: :cascade do |t|
+    t.bigint "practice_id", null: false
+    t.bigint "boat_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["boat_id"], name: "index_boat_uses_on_boat_id"
+    t.index ["practice_id"], name: "index_boat_uses_on_practice_id"
+  end
+
+  create_table "boats", force: :cascade do |t|
+    t.string "name"
+    t.integer "capacity"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "participations", force: :cascade do |t|
+    t.bigint "rower_id", null: false
+    t.bigint "practice_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["practice_id"], name: "index_participations_on_practice_id"
+    t.index ["rower_id"], name: "index_participations_on_rower_id"
+  end
+
+  create_table "practices", force: :cascade do |t|
+    t.date "date"
+    t.time "starts_at"
+    t.time "ends_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "rowers", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "boat_uses", "boats"
+  add_foreign_key "boat_uses", "practices"
+  add_foreign_key "participations", "practices"
+  add_foreign_key "participations", "rowers"
 end
